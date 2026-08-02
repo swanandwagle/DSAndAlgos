@@ -1,0 +1,22 @@
+# Compiled output
+out/
+*.class
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Maven / Gradle
+target/
+build/
+*.jar
+*.war
+
+# OS
+.DS_Store
+Thumbs.db
