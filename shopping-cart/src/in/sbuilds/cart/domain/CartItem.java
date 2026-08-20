@@ -38,6 +38,10 @@ public class CartItem {
         this.quantity-=quantity;
     }
 
+    public BigDecimal getLineTotal() {
+        return unitPrice.multiply(BigDecimal.valueOf(quantity));
+    }
+
     public String getProductName() {
         return productName;
     }

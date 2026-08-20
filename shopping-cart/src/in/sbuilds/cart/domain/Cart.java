@@ -1,7 +1,9 @@
 package in.sbuilds.cart.domain;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Cart {
@@ -31,6 +33,18 @@ public class Cart {
         } else {
             throw new IllegalArgumentException("Product not in cart: " + productName);
         }
+    }
+
+    public CartSummary getCartSummary() {
+        List<CartItem> cartItemList = this.cartItemsByProductName.values().stream().toList();
+        BigDecimal total = this.cartItemsByProductName
+                .values()
+                .stream()
+                .map(CartItem::getLineTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, RoundingMode.HALF_UP);
+
+        return new CartSummary(cartItemList, total);
     }
 
 }
