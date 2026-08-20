@@ -8,7 +8,7 @@ public class FixAmountDiscount implements  Discount{
     private final BigDecimal discountAmount;
 
     public FixAmountDiscount(BigDecimal discountAmount) {
-        this.discountAmount = Objects.requireNonNull(discountAmount, "Discount amount cannot be null");;
+        this.discountAmount = Objects.requireNonNull(discountAmount, "Discount amount cannot be null");
     }
 
     @Override
