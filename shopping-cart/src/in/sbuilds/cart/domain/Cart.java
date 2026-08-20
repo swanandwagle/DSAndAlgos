@@ -2,12 +2,23 @@ package in.sbuilds.cart.domain;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Cart {
     private Map<String, CartItem> cartItemsByProductName = new HashMap<>();
+    private Discount discount;
+
+    public void applyDiscount(Discount discount) {
+        this.discount = Objects.requireNonNull(discount, "discount must not be null");
+    }
+
+    public void removeDiscount() {
+        this.discount = null;
+    }
+
+    public Optional<Discount> getDiscount() {
+        return Optional.ofNullable(discount);
+    }
 
     public void addToCart(String productName, BigDecimal unitPrice, int quantity) {
         if(productName == null || productName.isBlank()) {
@@ -46,14 +57,18 @@ public class Cart {
                         cartItem.getUnitPrice()))
                 .toList();
 
-        BigDecimal total = this.cartItemsByProductName
+        BigDecimal subTotal = this.cartItemsByProductName
                 .values()
                 .stream()
                 .map(CartItem::getLineTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, RoundingMode.HALF_UP);
 
-        return new CartSummary(cartItemList, total);
+        BigDecimal discountedSubTotal = this.getDiscount()
+                .map(d -> d.applyTo(subTotal))
+                .orElse(subTotal);
+
+        return new CartSummary(cartItemList, subTotal, discountedSubTotal);
     }
 
 }
