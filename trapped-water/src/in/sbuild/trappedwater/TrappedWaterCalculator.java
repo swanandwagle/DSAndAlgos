@@ -2,6 +2,7 @@ package in.sbuild.trappedwater;
 
 public class TrappedWaterCalculator {
 
+    // O(n²) time, O(1) space — for each bar, scan left and right to find max walls
     public int calulateTrappedWaterWithBrutForeAlgo(int heights[]) {
         int totalWater = 0;
         if(heights != null && heights.length > 0) {
@@ -17,6 +18,7 @@ public class TrappedWaterCalculator {
                     maxRight = Math.max(maxRight, heights[rightCtr]);
                     rightCtr++;
                 }
+                // water at this bar is limited by the shorter surrounding wall
                 if(Math.min(maxLeft, maxRight) - heights[i] > 0) {
                     totalWater += Math.min(maxLeft, maxRight) - heights[i];
                 }
@@ -25,6 +27,7 @@ public class TrappedWaterCalculator {
         return totalWater;
     }
 
+    // O(n) time, O(1) space — process the shorter side first, it determines the water level
     public int calculateTrappedWaterTwoPtrAlgo(int heights[]) {
         int totalWater = 0;
         if(heights != null && heights.length > 0) {
