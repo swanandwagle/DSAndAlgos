@@ -12,25 +12,25 @@ public class CartItem {
         this.productName = Objects.requireNonNull(productName, "productName must not be null");
         Objects.requireNonNull(unitPrice, "unitPrice must not be null");
         if(unitPrice.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Unit price must be positive, was: " + unitPrice);
+            throw new IllegalArgumentException("Unit price must be positive, was: " + unitPrice + " for product " + productName);
         }
         this.unitPrice = unitPrice;
         if (quantity <= 0) {
-            throw new IllegalArgumentException("Quantity must be positive, was: " + quantity);
+            throw new IllegalArgumentException("Quantity must be positive, was: " + quantity + " for product " + productName);
         }
         this.quantity = quantity;
     }
 
     public void increaseQuantity(int quantity) {
         if (quantity <= 0) {
-            throw new IllegalArgumentException("Quantity must be positive, was: " + quantity);
+            throw new IllegalArgumentException("Quantity must be positive, was: " + quantity + " for product " + productName);
         }
         this.quantity += quantity;
     }
 
     public void decreaseQuantity(int quantity) {
         if (quantity <= 0) {
-            throw new IllegalArgumentException("Quantity must be positive, was: " + quantity);
+            throw new IllegalArgumentException("Quantity must be positive, was: " + quantity + " for product " + productName);
         }
         if(this.quantity < quantity) {
             throw new IllegalArgumentException("Existing quantity is less than the quantity to be removed.");

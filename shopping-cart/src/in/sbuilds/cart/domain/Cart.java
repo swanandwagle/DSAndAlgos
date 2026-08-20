@@ -11,7 +11,7 @@ public class Cart {
 
     public void addToCart(String productName, BigDecimal unitPrice, int quantity) {
         if(productName == null || productName.isBlank()) {
-            throw new IllegalArgumentException("Product name cannot be null or blank, was: " + quantity);
+            throw new IllegalArgumentException("Product name cannot be null or blank, was: " + productName);
         }
         if(cartItemsByProductName.containsKey(productName)) {
             cartItemsByProductName.get(productName).increaseQuantity(quantity);
@@ -20,9 +20,9 @@ public class Cart {
         }
     }
 
-    public  void removeFromCart(String productName, int quantity) {
+    public void removeFromCart(String productName, int quantity) {
         if(productName == null || productName.isBlank()) {
-            throw new IllegalArgumentException("Product name cannot be null or blank, was: " + quantity);
+            throw new IllegalArgumentException("Product name cannot be null or blank, was: " + productName);
         }
         if(cartItemsByProductName.containsKey(productName)) {
             CartItem cartItem = cartItemsByProductName.get(productName);
@@ -36,7 +36,16 @@ public class Cart {
     }
 
     public CartSummary getCartSummary() {
-        List<CartItem> cartItemList = this.cartItemsByProductName.values().stream().toList();
+        List<CartItemSnapshot> cartItemList = this
+                .cartItemsByProductName
+                .values()
+                .stream()
+                .map(cartItem -> new CartItemSnapshot(
+                        cartItem.getProductName(),
+                        cartItem.getQuantity(),
+                        cartItem.getUnitPrice()))
+                .toList();
+
         BigDecimal total = this.cartItemsByProductName
                 .values()
                 .stream()
